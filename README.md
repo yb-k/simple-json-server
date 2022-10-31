@@ -28,7 +28,7 @@ yarn serve
 
 ## Todo
 
-- pagination
+- ~~pagination~~
 - make a cli
 
 ## Reference
