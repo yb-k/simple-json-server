@@ -8,7 +8,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(boardController.getBoards)
+  .get(validate(boardValidation.getBoards), boardController.getBoards)
   .post(auth(), validate(boardValidation.createBoard), boardController.createBoard);
 
 router
@@ -34,6 +34,28 @@ module.exports = router;
  *     description: get Board Content List
  *     tags: [Board]
  *     security:
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: pageNum
+ *       - in: query
+ *         name: size
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 10
+ *         description: Maximum number of users
+ *       - in: query
+ *         name: pageSize
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 10
+ *         description: Page number
  *     responses:
  *       "200":
  *         content:
@@ -41,10 +63,30 @@ module.exports = router;
  *             schema:
  *               type: object
  *               properties:
- *                 results:
+ *                 contents:
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Board'
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 totalElements:
+ *                   type: integer
+ *                   example: 10
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 5
+ *                 next:
+ *                   type: boolean
+ *                   example: true
+ *                 prev:
+ *                   type: boolean
+ *                   example: false
+ *                 pageList:
+ *                   type: array
+ *                   items:
+ *                     type: integer
+ *                   example: [1,2,3,4,5]
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -107,14 +149,14 @@ module.exports = router;
  *         name: id
  *         required: true
  *         schema:
- *           type: string
+ *           type: integer
  *         description: Board id
  *     responses:
  *       "200":
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Board'
+ *               $ref: '#/components/schemas/Board'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "404":

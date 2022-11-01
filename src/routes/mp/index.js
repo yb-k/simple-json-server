@@ -18,7 +18,7 @@ const authRouter = express.Router();
 const todoRouter = express.Router();
 const userRouter = express.Router();
 
-boardRouter.post('/list', mp, boardController.getBoards);
+boardRouter.post('/list', mp, validate(boardValidation.getBoards), boardController.getBoards);
 boardRouter.post('/info', mp, validate(boardValidation.getBoard), boardController.getBoardById);
 boardRouter.post('/regist', mp, auth(), validate(boardValidation.createBoard), boardController.createBoard);
 boardRouter.post('/update', mp, auth(), validate(boardValidation.updateBoard), boardController.updateBoard);

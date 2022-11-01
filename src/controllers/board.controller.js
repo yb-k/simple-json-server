@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const _merge = require('lodash/merge');
 const catchAsync = require('../utils/catchAsync');
 const { boardService } = require('../services');
 
@@ -8,7 +9,8 @@ const createBoard = catchAsync((req, res) => {
 });
 
 const getBoards = catchAsync((req, res) => {
-  const boards = boardService.getBoards();
+  const options = _merge(req.body, req.query);
+  const boards = boardService.getBoards(options);
   res.send(boards);
 });
 

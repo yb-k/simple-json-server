@@ -8,6 +8,19 @@ const createBoard = {
   }),
 };
 
+const getBoards = {
+  query: Joi.object().keys({
+    page: Joi.number(),
+    pageSize: Joi.number(),
+    size: Joi.number(),
+  }),
+  body: Joi.object().keys({
+    page: Joi.number(),
+    pageSize: Joi.number(),
+    size: Joi.number(),
+  }),
+};
+
 const getBoard = {
   params: Joi.object().keys({
     id: Joi.number().required(),
@@ -29,4 +42,5 @@ module.exports = {
   createBoard,
   getBoard,
   updateBoard,
+  getBoards,
 };

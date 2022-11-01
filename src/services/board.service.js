@@ -6,20 +6,24 @@ const nextId = require('../utils/nextId');
 const db = require('../config/lowdb');
 const { defaultDateFormat } = require('../config/constants');
 const userService = require('./user.service');
+const Pagination = require('../utils/pagination');
 
 const getBoardDb = () => {
   return db.get('boards');
 };
 
-const getBoards = () => {
+const getBoards = (options = {}) => {
   const userMap = userService.getUsersMap();
-  return getBoardDb()
-    .map((item) => {
-      // eslint-disable-next-line no-param-reassign
-      item.writer = lodash.cloneDeep(userMap[item.userId]);
-      return item;
-    })
-    .value();
+  return new Pagination(
+    getBoardDb()
+      .map((item) => {
+        // eslint-disable-next-line no-param-reassign
+        item.writer = lodash.cloneDeep(userMap[item.userId]);
+        return item;
+      })
+      .value(),
+    options
+  );
 };
 
 const getBoardsByUserId = (userId) => {
