@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
-// const httpStatus = require('http-status');
+const httpStatus = require('http-status');
 const dayjs = require('dayjs');
 const config = require('../config/config');
-// const userService = require('./user.service');
-// const { Token } = require('../models');
-// const ApiError = require('../utils/ApiError');
+const userService = require('./user.service');
+const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const db = require('../config/lowdb');
 
@@ -94,6 +93,19 @@ const generateAuthTokens = (user) => {
   };
 };
 
+const generateResetPasswordToken = (email) => {
+  const user = userService.getUserByEmail(email);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  const accessTokenExpires = dayjs().add(config.jwt.accessExpirationMinutes, 'minutes');
+  const resetPasswordToken = generateToken(user.id, accessTokenExpires, tokenTypes.RESET_PASSWORD);
+  saveToken(resetPasswordToken, user.id, accessTokenExpires, tokenTypes.RESET_PASSWORD);
+  return {
+    resetPasswordToken,
+  };
+};
+
 const findToken = ({ token, type, blacklisted }) => {
   const tokenDb = getTokenDb();
   const tokenDoc = tokenDb.find({ token, type, blacklisted });
@@ -115,4 +127,5 @@ module.exports = {
   generateAuthTokens,
   findToken,
   removeToken,
+  generateResetPasswordToken,
 };
