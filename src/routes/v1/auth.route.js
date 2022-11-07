@@ -2,6 +2,7 @@ const express = require('express');
 const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
+const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.post('/session/logout', authController.sessionLogout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
+router.get('/session', auth(), authController.getSession);
 // router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
 // router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
 
@@ -23,6 +25,28 @@ module.exports = router;
  * tags:
  *   name: Auth
  *   description: Authentication
+ */
+
+/**
+ * @swagger
+ * /auth/session:
+ *   get:
+ *     summary: Get a Session User Info
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/User'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ *
  */
 
 /**

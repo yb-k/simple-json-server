@@ -13,7 +13,7 @@ const { tokenTypes } = require('../config/tokens');
 const loginUserWithEmailAndPassword = (email, password) => {
   const user = userService.getUserByEmail(email);
   if (!user || !(user.password === password)) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Incorrect email or password');
   }
   return user;
 };

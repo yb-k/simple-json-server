@@ -52,6 +52,10 @@ const resetPassword = catchAsync((req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getSession = catchAsync((req, res) => {
+  res.send({ ...req.user });
+});
+
 module.exports = {
   register,
   login,
@@ -61,4 +65,5 @@ module.exports = {
   forgotPassword,
   sessionLogin,
   sessionLogout,
+  getSession,
 };
