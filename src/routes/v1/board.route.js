@@ -13,7 +13,7 @@ router
 
 router
   .route('/:id')
-  .get(validate(boardValidation.getBoard), boardController.getBoardById)
+  .get(auth(), validate(boardValidation.getBoard), boardController.getBoardById)
   .patch(auth(), validate(boardValidation.updateBoard), boardController.updateBoard)
   .delete(auth(), validate(boardValidation.getBoard), boardController.deleteBoard);
 
@@ -87,10 +87,6 @@ module.exports = router;
  *                   items:
  *                     type: integer
  *                   example: [1,2,3,4,5]
- *       "401":
- *         $ref: '#/components/responses/Unauthorized'
- *       "403":
- *         $ref: '#/components/responses/Forbidden'
  *
  *   post:
  *     summary: Create a Board Content
@@ -132,8 +128,6 @@ module.exports = router;
  *                     $ref: '#/components/schemas/Todo'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
- *       "403":
- *         $ref: '#/components/responses/Forbidden'
  */
 
 /**

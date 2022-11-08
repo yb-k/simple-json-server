@@ -16,6 +16,7 @@ const getBoards = catchAsync((req, res) => {
 
 const getBoardById = catchAsync((req, res) => {
   const board = boardService.getBoardById(req.params.id);
+  board.writeable = req.user ? req.user.id === board.writer.id : false;
   res.send(board);
 });
 
