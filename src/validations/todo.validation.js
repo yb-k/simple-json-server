@@ -17,8 +17,8 @@ const updateTodo = {
     id: Joi.number().required(),
   }),
   body: Joi.object().keys({
-    content: Joi.string(),
-    completed: Joi.boolean(),
+    content: Joi.string().allow(null),
+    completed: Joi.boolean().allow(null),
   }),
 };
 

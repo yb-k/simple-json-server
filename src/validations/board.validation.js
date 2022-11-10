@@ -34,7 +34,7 @@ const updateBoard = {
   body: Joi.object().keys({
     title: Joi.string(),
     content: Joi.string(),
-    thumnail: Joi.string().default(''),
+    thumnail: Joi.string().allow(null, ''),
   }),
 };
 
