@@ -46,10 +46,10 @@ const createBoard = (userId, payload) => {
 const updateBoardById = (id, userId, payload) => {
   const board = getBoardsByUserId(userId).find({ id }).value();
   if (!board) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Todo not found');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Board not found');
   }
   getBoardDb()
-    .find(board)
+    .find({ id })
     .merge({
       ...payload,
     })

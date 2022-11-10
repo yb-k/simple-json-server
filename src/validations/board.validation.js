@@ -4,7 +4,7 @@ const createBoard = {
   body: Joi.object().keys({
     title: Joi.string().required(),
     content: Joi.string().required(),
-    thumnail: Joi.string().default(''),
+    thumnail: Joi.string().allow(null, ''),
   }),
 };
 
