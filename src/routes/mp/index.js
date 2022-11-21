@@ -19,7 +19,7 @@ const todoRouter = express.Router();
 const userRouter = express.Router();
 
 boardRouter.post('/list', mp, validate(boardValidation.getBoards), boardController.getBoards);
-boardRouter.post('/info', mp, validate(boardValidation.getBoard), boardController.getBoardById);
+boardRouter.post('/info', mp, auth(), validate(boardValidation.getBoard), boardController.getBoardById);
 boardRouter.post('/regist', mp, auth(), validate(boardValidation.createBoard), boardController.createBoard);
 boardRouter.post('/update', mp, auth(), validate(boardValidation.updateBoard), boardController.updateBoard);
 boardRouter.post('/delete', mp, auth(), validate(boardValidation.getBoard), boardController.deleteBoard);
@@ -32,6 +32,7 @@ authRouter.post('/session/logout', mp, authController.sessionLogout);
 authRouter.post('/refresh-tokens', mp, validate(authValidation.refreshTokens), authController.refreshTokens);
 authRouter.post('/forgot-password', mp, validate(authValidation.forgotPassword), authController.forgotPassword);
 authRouter.post('/reset-password', mp, validate(authValidation.resetPassword), authController.resetPassword);
+authRouter.post('/get-session', mp, auth(), authController.getSession);
 
 todoRouter.post('/list', mp, auth(), todoController.getTodos);
 todoRouter.post('/regist', mp, auth(), validate(todoValidation.createTodo), todoController.createTodo);
@@ -90,6 +91,10 @@ module.exports = rootRouter;
  * /mp/auth/session/logout:
  *   post:
  *     summary: Logout
+ *     tags: [MorpheusProxy]
+ * /mp/auth/get-session:
+ *   post:
+ *     summary: Get Session Info
  *     tags: [MorpheusProxy]
  */
 
